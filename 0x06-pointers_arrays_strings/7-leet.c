@@ -1,44 +1,37 @@
-#include <stdlib.h>
 #include "main.h"
-
 /**
- * leet - Encodes a string into 1337.
- * @str: The input string to be encoded.
+ *leet - encodes a string into 1337.
+ *letters a and A are replaced by 4.
+ *Letters e and E are replaced by 3
+ *Letters o and O are replaced by 0
+ *Letters t and T are replaced by 7
+ *Letters l and L are replaced by 1
+ *@s: pointer to string.
  *
- * Return: A pointer to the encoded string.
+ *Return: pointer to s.
  */
-char *leet(char *str)
+char *leet(char *s)
 {
-	char *ptr = str;
-	char *leetStr = malloc(sizeof(char) * 100); /* Assuming the encoded string won't exceed 100 characters */
-	int i, j;
+	int stringCount, leetCount;
 	char leetLetters[] = "aAeEoOtTlL";
-	char leetChars[] = "4433007711";
+	char leetNums[] = "4433007711";
 
-	if (leetStr == NULL)
-		return (NULL);
+	/*string scanning*/
+	stringCount = 0;
+	while (s[stringCount] != '\0')
 
-	/* Copy the original string while encoding characters */
-	for (i = 0; str[i] != '\0'; i++)
+	/*check in whether leetLetter is found*/
 	{
-		for (j = 0; leetLetters[j] != '\0'; j++)
+		leetCount = 0;
+		while (leetCount < 10)
 		{
-			if (str[i] == leetLetters[j])
+			if (leetLetters[leetCount] == s[stringCount])
 			{
-				leetStr[i] = leetChars[j];
-				break;
+				s[stringCount] = leetNums[leetCount];
 			}
+			leetCount++;
 		}
-		if (leetLetters[j] == '\0')
-			leetStr[i] = str[i];
+		stringCount++;
 	}
-	leetStr[i] = '\0';
-
-	/* Copy the encoded string back to the original string */
-	for (i = 0; leetStr[i] != '\0'; i++)
-		ptr[i] = leetStr[i];
-	ptr[i] = '\0';
-
-	free(leetStr);
-	return (str);
+	return (s);
 }
