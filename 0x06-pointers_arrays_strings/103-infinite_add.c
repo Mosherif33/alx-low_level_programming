@@ -1,93 +1,86 @@
 #include "main.h"
 
 /**
- * get_size - get the string size
- * @s: the string
- *
- * Return: the size of the string
- */
-int get_size(char *s)
-{
-	int i = 0;
+* rev_string - reverse array
+* @n: integer params
+* Return: 0
+*/
 
-	while (s[i] != '\0')
+void rev_string(char *n)
+
+{
+
+	int i = 0;
+	int j = 0;
+	char temp;
+
+	while (*(n + i) != '\0')
+
 	{
 		i++;
 	}
-	return (i);
+
+	i--;
+	for (j = 0; j < i; j++, i--)
+	{
+		temp = *(n +j);
+
+		*(n + j) = *(n + i);
+		*(n + i) = temp;
+	}
 }
 
-/**
- * get_val - get the value of the digit
- * @s: the string
- * @index: the index of the digit
- *
- * Return: integer value
- */
-int get_val(char *s, int index)
-{
-	int val;
-
-	if (index < 0)
-	{
-		val = 0;
-	}
-	else
-	{
-		val = s[index] - '0';
-	}
-	return (val);
-}
 
 /**
- * infinite_add - adds two numbers
- * @n1: the first number
- * @n2: the second number
- * @r: the buffer used to store the result
- * @size_r: the buffer size
- *
- * Return: a pointer to the result
- */
+* infinite_add - add 2 numbers together
+* @n1: text representation of 1st number to add
+* @n2: text representation of 2nd number to add
+* @r: pointer to buffer
+* @size_r: buffer size
+* Return: pointer to calling function
+*/
+
+
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
+
 {
-	int size_n1, size_n2, max_size, i, n1_val, n2_val, carry;
+	int overflow = 0, i = 0, j = 0, digits = 0;
 
-	size_n1 = get_size(n1);
-	size_n2 = get_size(n2);
-	max_size = (size_n1 > size_n2) ? (size_n1) : (size_n2);
-	if ((max_size + 1) > size_r)
-	{
+	int val1 = 0, val2 = 0, temp_tot = 0;
+
+	while (*(n1 + i) != '\0')
+		i++;
+	while (*(n2 + j) != '\0')
+		j++;
+	i--;
+	j--;
+	if (j >= size_r || i >= size_r)
 		return (0);
-	}
-	i = max_size;
-	while (i > 0)
+	while (j >= 0 || i >= 0 || overflow == 1)
 	{
-		n1_val = get_val(n1, size_n1);
-		n2_val = get_val(n2, size_n2);
-		r[i] = (n1_val + n2_val + carry) % 10 + '0';
-		carry = (n1_val + n2_val + carry) / 10;
-
-		i--;
-		size_n1--;
-		size_n2--;
-	}
-	r[max_size + 1] = '\0';
-	if (carry > 0)
-	{
-		if (max_size + 2 < size_r)
-		{
-			i = max_size;
-			while (i >= 0)
-			{
-				r[i + 1] = r[i];
-				i--;
-			}
-		}
+		if (i < 0)
+			val1 = 0;
 		else
-		{
+			val1 = *(n1 + i) - '0';
+		if (j < 0)
+			val2 = 0;
+		else
+			val2 = *(n2 + j) - '0';
+		temp_tot = val1 + val2 + overflow;
+		if (temp_tot >= 10)
+			overflow = 1;
+		else
+			overflow = 0;
+		if (digits >= (size_r - 1))
 			return (0);
-		}
-		r[0] = carry + '0';
+		*(r + digits) = (temp_tot % 10) + '0';
+		digits++;
+		j--;
+		i--;
 	}
+	if (digits == size_r)
+		return (0);
+	*(r + digits) = '\0';
+	rev_string(r);
 	return (r);
 }
